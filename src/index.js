@@ -10,12 +10,10 @@ const refs = {
     countryList: document.querySelector('.country-list'),
     countryInfo: document.querySelector('.country-info'),
 };
-
 const clearData = () => {
     refs.countryInfo.innerHTML = '';
     refs.countryList.innerHTML = '';
 };
-
 const input = () => {
     const name = refs.input.value.trim();
     if (name.length === 0) {
@@ -63,7 +61,6 @@ const makeCountryList = data => {
             <span class="country-name">${item.name.common}</span></li>`,
         )
         .join('');
-
     refs.countryList.innerHTML = markup;
 };
 
@@ -80,5 +77,4 @@ const makeCountryInfo = item => {
 
     refs.countryInfo.innerHTML = markup;
 };
-
 refs.input.addEventListener('input', debounce(input, DEBOUNCE_DELAY));
