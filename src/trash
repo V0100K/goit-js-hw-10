@@ -1,0 +1,78 @@
+; import './css/styles.css';
+; import { fetchCountries } from './fetchCountries';
+; import { debounce } from 'lodash';
+; import Notiflix from 'notiflix';
+
+; const DEBOUNCE_DELAY = 300;
+; const countryList = document.querySelector('.country-list');
+; const countryInfo = document.querySelector('.country-info');
+; const inputNode = document.querySelector('#search-box');
+
+; function onInput() {
+;   const inputText = inputNode.value.trim();
+
+;   countryList.innerHTML = '';
+;   countryInfo.innerHTML = '';
+
+;   if (!inputText) {
+;     return;
+;   }
+
+;   fetchCountries(inputText).then(countries => {
+;     if (countries.length > 1) {
+;       Countries(countries);
+;       return;
+;     }
+;     if (countries.length > 10) {
+;       Notiflix.Notify.info('Give me more, more letters....');
+;       return;
+;     }
+;     if (countries.status === 404) {
+;       Notiflix.Notify.failure('Сame up with a new country? Not bad....');
+;       return;
+;     }
+
+;     renderCountryInfo(countries);
+;   });
+; }
+
+; inputNode.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
+
+; function Countries(countries) {
+;   countryInfo.innerHTML = '';
+
+;   const markup = countries
+;     .map(country => {
+;       return `
+;         <li class="country-list-item">
+;           <img src='${country.flag}' alt='${country.name} flag' width='80' />
+;           <p>${country.name}</p>
+;         </li>
+;         `;
+;     })
+;     .join('');
+
+;   countryList.innerHTML = markup;
+; }
+
+; function CountryInfo(country) {
+;   countryList.innerHTML = '';
+
+;   const markup = country
+;     .map(country => {
+;       return `
+;         <div class="renderCountryInfo-firstString">
+;           <img src='${country.flag}' alt='${country.name} flag' width='140' />
+;           <h2>${country.name}</h2>
+;         </div>
+;         <p><b>Capital</b>: ${country.capital}</p>
+;         <p><b>TimeZone</b>: ${country.timezones}</p>
+
+;         <p><b>Population</b>: ${country.population}</p>
+;         <p><b>Languages</b>: ${country.languages.map(item => ` ${item.name}`)}</p>
+;         `;
+;     })
+;     .join('');
+
+;   countryInfo.innerHTML = markup;
+; }
